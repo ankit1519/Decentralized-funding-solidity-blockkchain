@@ -5,6 +5,7 @@ pragma solidity ^0.8.0;
 //withdraw funds
 //set minimum funding value in USD
 import {PriceConverter} from "./PriceConverter.sol";
+import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 error NotOwner();
 contract  DecentralizedFunding {
     using PriceConverter for uint256;
@@ -23,6 +24,10 @@ contract  DecentralizedFunding {
         require(msg.value.getConversionRate()>=MINIMUM_USD,"didnt have enough eth"); //1e18=1ETH=1000000000000000000=10**18 wei
         funders.push(msg.sender);
         // fundDetail[msg.sender]+=getConversionRate(msg.value);
+    }
+
+    function getVersion() public view returns (uint256){
+        return AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306).version();
     }
      function withdraw() public onlyOwner {
         // require(msg.sender==owner,"Must be owner");
@@ -68,4 +73,6 @@ contract  DecentralizedFunding {
     fallback() external payable { 
         fund();
     }
+
+   
 }

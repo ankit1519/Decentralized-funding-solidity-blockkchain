@@ -20,4 +20,11 @@ contract DecentralizedFundingTest is Test{
         assertEq(decentralizedFunding.i_owner(),address(this));
         
     }
+
+    function testPriceFeedVersionIsAccurate() view public{
+        
+        uint256 version=decentralizedFunding.getVersion();
+        console.log(version);
+        assertEq(version, 4);
+    }
 }
